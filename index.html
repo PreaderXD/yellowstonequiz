@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Yellowstone Quiz</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: "Montserrat", sans-serif;
+  background: linear-gradient(135deg, #3e3200, #cc7a00);
+  color: #fff8dc;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+}
+
+.screen {
+  background: rgba(62, 50, 0, 0.85);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(204, 122, 0, 0.6);
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+  color: #ffd54f;
+}
+
+button {
+  background: #cc7a00;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #3e3200;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 10px 8px;
+  transition: background 0.3s ease;
+  width: 100%;
+  max-width: 250px;
+}
+
+button:hover {
+  background: #ff9800;
+  color: #3e3200;
+}
+
+.quiz-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+@media (min-width: 600px) {
+  .quiz-list-wrapper {
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 30px;
+  }
+}
+
+.quiz-list {
+  background: rgba(255, 213, 79, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.quiz-list button {
+  background: #b36b00;
+  color: #fff8dc;
+}
+
+.quiz-list button:hover {
+  background: #cc7a00;
+  color: #3e3200;
+}
+
+.score-list {
+  background: rgba(255, 213, 79, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+  color: #fff8dc;
+}
+
+.score-list h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  text-align: center;
+  color: #ffd54f;
+}
+
+.score-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.score-list li {
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #fff8dc;
+}
+
+#back-to-start {
+  margin-top: 0;
+}
+
+.quiz-container {
+  background: rgba(62, 50, 0, 0.85);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(204, 122, 0, 0.6);
+  display: none;
+  text-align: left;
+  box-sizing: border-box;
+  color: #fff8dc;
+}
+
+.quiz-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #ffd54f;
+}
+
+.question {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.options {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+
+.options li {
+  background: #6b5600;
+  margin-bottom: 12px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border: 2px solid transparent;
+  font-size: 1rem;
+  color: #fff8dc;
+}
+
+.options li:hover {
+  background: #cc7a00;
+}
+
+.options li.selected {
+  border-color: #ffd54f;
+  background: #ffb300;
+  color: #3e3200;
+  font-weight: 700;
+}
+
+.feedback {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  min-height: 24px;
+  font-weight: 600;
+  color: #ffb300;
+}
+
+.btn-next {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border: none;
+  background: #cc7a00;
+  color: #3e3200;
+  display: none;
+  width: 100%;
+  max-width: 250px;
+}
+
+.btn-next:hover {
+  background: #ff9800;
+}
+
+.btn-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+@media (min-width: 600px) {
+  .btn-container {
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+  }
+}
+
+.btn-restart,
+.btn-stop-quiz {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border: none;
+  flex: 1;
+  max-width: 200px;
+  width: 100%;
+  display: inline-block;
+  background: #cc7a00;
+  color: #3e3200;
+}
+
+.btn-restart:hover,
+.btn-stop-quiz:hover {
+  background: #ff9800;
+}
+
+.score {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-top: 15px;
+}
+
+    </style>
+  </head>
+  <body>
+  <div class="container">
+    <!-- Start Screen -->
+    <div class="start-screen screen">
+      <h1>Welcome to the Yellowstone Quiz Portal</h1>
+      <button id="play-btn">Play Quiz</button>
+      <button id="stop-btn">Stop Quizzing</button>
+      <h4>Made By Preader (PreaderXD on Github)</h4>
+    </div>
+
+    <!-- Quiz List Screen -->
+    <div class="quiz-list-screen screen" style="display: none">
+      <h1>Select a Quiz</h1>
+      <div class="quiz-list-wrapper">
+        <div class="quiz-list">
+          <button data-quiz="yellowstone-s1">
+            Yellowstone - Season 1
+          </button>
+          <button data-quiz="yellowstone-s2">
+            Yellowstone - Season 2
+          </button>
+          <button data-quiz="yellowstone-s3">
+            Yellowstone - Season 3
+          </button>
+          <button data-quiz="yellowstone-s4">
+            Yellowstone - Season 4
+          </button>
+          <button data-quiz="yellowstone-s5">
+            Yellowstone - Season 5
+          </button>
+        </div>
+
+        <div class="score-list">
+          <h2>Recent Scores</h2>
+          <ul id="score-list-ul">
+            <!-- Scores populated here -->
+          </ul>
+        </div>
+      </div>
+      <button id="back-to-start">Back to Start</button>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div class="quiz-container" style="display:none">
+      <h1>Quiz</h1>
+      <div class="question"></div>
+      <ul class="options"></ul>
+      <div class="feedback"></div>
+      <div class="btn-container">
+        <button class="btn-next">Next Question</button>
+        <button class="btn-restart">Restart Quiz</button>
+        <button class="btn-stop-quiz">Quiz Portal</button>
+      </div>
+      <div class="score"></div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(function () {
+      const quizzes = {
+        "yellowstone-s1": {
+          title: "Yellowstone - Season 1 Quiz",
+          questions: [
+            {
+              question: "Who is the patriarch of the Dutton family?",
+              options: ["John Dutton", "Kayce Dutton", "Rip Wheeler", "Jamie Dutton"],
+              answer: 0,
+            },
+            {
+              question: "What is the name of the Yellowstone Ranch’s main rival?",
+              options: ["Broken Rock", "Chief Joseph", "Fort Peck", "Two Wolves"],
+              answer: 0,
+            },
+            {
+              question: "What role does Rip Wheeler hold on the ranch?",
+              options: ["Foreman", "Ranch Hand", "Lawyer", "Sheriff"],
+              answer: 0,
+            },
+            {
+              question: "Which city is nearest to the Yellowstone Ranch?",
+              options: ["Billings", "Montana Falls", "Missoula", "Bozeman"],
+              answer: 3,
+            },
+            {
+              question: "What is the profession of John Dutton’s daughter, Beth?",
+              options: ["Rancher", "Banker", "Corporate Fixer", "Doctor"],
+              answer: 2,
+            },
+          ],
+        },
+
+        "yellowstone-s2": {
+          title: "Yellowstone - Season 2 Quiz",
+          questions: [
+            {
+              question: "Who leads the Broken Rock Reservation in Season 2?",
+              options: ["Monica Long", "Chief Thomas Rainwater", "Teeter", "Walker"],
+              answer: 1,
+            },
+            {
+              question: "What significant event happens to Kayce Dutton in Season 2?",
+              options: [
+                "He becomes sheriff",
+                "He moves to Montana",
+                "He loses his job",
+                "He returns to the ranch",
+              ],
+              answer: 3,
+            },
+            {
+              question: "What is Beth Dutton’s relationship with Jamie Dutton?",
+              options: ["Siblings", "Married", "Cousins", "Friends"],
+              answer: 0,
+            },
+            {
+              question: "Who tries to buy the Yellowstone Ranch in Season 2?",
+              options: ["Market Equities", "Mickey", "Lloyd Pierce", "Dan Jenkins"],
+              answer: 0,
+            },
+            {
+              question: "What is Rip Wheeler’s connection to Beth?",
+              options: [
+                "They are siblings",
+                "Romantic partners",
+                "Rivals",
+                "Business partners",
+              ],
+              answer: 1,
+            },
+          ],
+        },
+
+        "yellowstone-s3": {
+          title: "Yellowstone - Season 3 Quiz",
+          questions: [
+            {
+              question: "Who becomes the new mayor of the nearby town?",
+              options: ["Dan Jenkins", "Jamie Dutton", "Walker", "Monica Long"],
+              answer: 0,
+            },
+            {
+              question: "What major development project threatens the ranch?",
+              options: [
+                "The casino expansion",
+                "The railway project",
+                "The housing development",
+                "The airport expansion",
+              ],
+              answer: 1,
+            },
+            {
+              question: "Which character gets elected as the governor?",
+              options: ["Jamie Dutton", "John Dutton", "Dan Jenkins", "Walker"],
+              answer: 0,
+            },
+            {
+              question: "What is the fate of Thomas Rainwater’s alliance with John Dutton?",
+              options: [
+                "They become business partners",
+                "They remain adversaries",
+                "They marry",
+                "They go to court",
+              ],
+              answer: 1,
+            },
+            {
+              question: "Which character does Beth confront about betrayal?",
+              options: ["Jamie", "Walker", "Rip", "Dan Jenkins"],
+              answer: 0,
+            },
+          ],
+        },
+
+        "yellowstone-s4": {
+          title: "Yellowstone - Season 4 Quiz",
+          questions: [
+            {
+              question: "Who assumes leadership roles on the ranch after Season 3 events?",
+              options: ["Kayce and Beth", "John and Jamie", "Rip and Walker", "Beth and Monica"],
+              answer: 0,
+            },
+            {
+              question: "What new threat emerges in Season 4?",
+              options: [
+                "A rival rancher",
+                "The Beck brothers",
+                "A government takeover",
+                "A wild fire",
+              ],
+              answer: 1,
+            },
+            {
+              question: "What happens to Jamie Dutton in Season 4?",
+              options: [
+                "He becomes sheriff",
+                "He reconciles with Beth",
+                "He runs for governor",
+                "He is attacked",
+              ],
+              answer: 3,
+            },
+            {
+              question: "Who is the love interest of Kayce in this season?",
+              options: ["Monica Long", "Beth Dutton", "Teeter", "Summer Higgins"],
+              answer: 0,
+            },
+            {
+              question: "Which family member struggles with loyalty and identity?",
+              options: ["Jamie Dutton", "Kayce Dutton", "Rip Wheeler", "John Dutton"],
+              answer: 0,
+            },
+          ],
+        },
+
+        "yellowstone-s5": {
+          title: "Yellowstone - Season 5 Quiz",
+          questions: [
+            {
+              question: "What major event opens Season 5?",
+              options: [
+                "John Dutton’s death",
+                "A new land dispute",
+                "Kayce becoming sheriff",
+                "The Beck brothers’ return",
+              ],
+              answer: 0,
+            },
+            {
+              question: "Who steps up to lead the ranch after John’s death?",
+              options: ["Beth Dutton", "Kayce Dutton", "Jamie Dutton", "Rip Wheeler"],
+              answer: 1,
+            },
+            {
+              question: "What new alliance forms to protect Yellowstone?",
+              options: [
+                "Duttons and Broken Rock",
+                "Duttons and Market Equities",
+                "Duttons and the government",
+                "Duttons and rival ranchers",
+              ],
+              answer: 0,
+            },
+            {
+              question: "What happens to Beth’s character arc this season?",
+              options: [
+                "She leaves the ranch",
+                "She struggles with addiction",
+                "She takes over the family business",
+                "She reconciles with Jamie",
+              ],
+              answer: 2,
+            },
+            {
+              question: "Which antagonist poses a serious threat in Season 5?",
+              options: ["The Beck brothers", "Dan Jenkins", "Market Equities", "Jamie Dutton"],
+              answer: 0,
+            },
+          ],
+        },
+      };
+
+      // State variables
+      let currentQuizKey = null;
+      let currentQuestionIndex = 0;
+      let correctAnswersCount = 0;
+
+      // Cached jQuery selectors
+      const $startScreen = $(".start-screen");
+      const $quizListScreen = $(".quiz-list-screen");
+      const $quizContainer = $(".quiz-container");
+      const $playBtn = $("#play-btn");
+      const $stopBtn = $("#stop-btn");
+      const $backToStartBtn = $("#back-to-start");
+      const $scoreListUl = $("#score-list-ul");
+
+      const $questionText = $(".question");
+      const $optionsList = $(".options");
+      const $feedback = $(".feedback");
+      const $btnNext = $(".btn-next");
+      const $btnRestart = $(".btn-restart");
+      const $btnStopQuiz = $(".btn-stop-quiz");
+      const $scoreDisplay = $(".score");
+
+      // Helpers
+      function loadScores() {
+        // load score data from localStorage (if any)
+        const stored = localStorage.getItem("quizScores");
+        if (stored) {
+          try {
+            return JSON.parse(stored);
+          } catch {
+            return {};
+          }
+        }
+        return {};
+      }
+
+      function saveScores(scores) {
+        localStorage.setItem("quizScores", JSON.stringify(scores));
+      }
+
+      function updateScoreList() {
+        const scores = loadScores();
+        $scoreListUl.empty();
+
+        Object.keys(quizzes).forEach((quizKey) => {
+          const quizName = quizzes[quizKey].title.replace(" Quiz", "");
+          const score = scores[quizKey];
+
+          let scoreText = "N/A";
+          if (score !== undefined && score !== null) {
+            scoreText = `${score} / 5`;
+          }
+
+          const li = $("<li>").text(`${quizName}: ${scoreText}`);
+          $scoreListUl.append(li);
+        });
+      }
+
+      function showScreen(screen) {
+        $startScreen.hide();
+        $quizListScreen.hide();
+        $quizContainer.hide();
+
+        screen.show();
+      }
+
+      // Quiz logic
+
+      function startQuiz(quizKey) {
+        currentQuizKey = quizKey;
+        currentQuestionIndex = 0;
+        correctAnswersCount = 0;
+        $btnNext.hide();
+        $btnRestart.hide();
+        $btnStopQuiz.hide();
+        $feedback.text("");
+        $scoreDisplay.text(
+          `Score: ${correctAnswersCount} / ${quizzes[currentQuizKey].questions.length}`
+        ).show();
+        showScreen($quizContainer);
+        loadQuestion();
+      }
+
+      function loadQuestion() {
+        const quiz = quizzes[currentQuizKey];
+        const q = quiz.questions[currentQuestionIndex];
+        $questionText.text(q.question);
+        $optionsList.empty();
+        $feedback.text("");
+        $btnNext.hide();
+        $btnRestart.hide();
+
+        q.options.forEach((opt, i) => {
+          const $li = $("<li>").text(opt).data("index", i);
+          $optionsList.append($li);
+        });
+      }
+
+      function updateScoreDisplay() {
+        $scoreDisplay.text(
+          `Score: ${correctAnswersCount} / ${quizzes[currentQuizKey].questions.length}`
+        );
+      }
+
+      // Event Listeners
+
+      // Start Play button - show quiz list screen
+      $playBtn.on("click", () => {
+        updateScoreList();
+        showScreen($quizListScreen);
+      });
+
+      // Stop Quizzing button
+      $stopBtn.on("click", () => {
+        alert("Thank you for using the Yellowstone Quiz Portal! Goodbye!");
+      });
+
+      // Back to Start button
+      $backToStartBtn.on("click", () => {
+        showScreen($startScreen);
+      });
+
+      // Clicking on quiz list buttons
+      $(".quiz-list").on("click", "button", function () {
+        const quizKey = $(this).data("quiz");
+        startQuiz(quizKey);
+      });
+
+      // Clicking an option in quiz
+      $optionsList.on("click", "li", function () {
+        if ($btnNext.is(":visible")) return;
+
+        const selectedIndex = $(this).data("index");
+        const quiz = quizzes[currentQuizKey];
+        const question = quiz.questions[currentQuestionIndex];
+
+        $optionsList.children().removeClass("selected");
+        $(this).addClass("selected");
+
+        if (selectedIndex === question.answer) {
+          $feedback.text("Correct! 🎉");
+          correctAnswersCount++;
+        } else {
+          $feedback.text(
+            `Wrong! Correct answer: ${question.options[question.answer]}`
+          );
+        }
+
+        updateScoreDisplay();
+        $btnNext.show();
+      });
+
+      // Next Question button
+      $btnNext.on("click", () => {
+        currentQuestionIndex++;
+        const quiz = quizzes[currentQuizKey];
+        if (currentQuestionIndex >= quiz.questions.length) {
+          $feedback.text(
+            `Quiz complete! Your final score: ${correctAnswersCount} / ${quiz.questions.length}`
+          );
+          $scoreDisplay.hide();
+          $btnNext.hide();
+          $btnRestart.show();
+          $btnStopQuiz.show();
+
+          const scores = loadScores();
+          scores[currentQuizKey] = correctAnswersCount;
+          saveScores(scores);
+        } else {
+          loadQuestion();
+        }
+      });
+
+      // Restart Quiz button
+      $btnRestart.on("click", () => {
+        startQuiz(currentQuizKey);
+      });
+
+      // Quiz Portal (stop quiz) button
+      $btnStopQuiz.on("click", () => {
+        updateScoreList();
+        showScreen($quizListScreen);
+      });
+
+      // Initialize app by showing start screen
+      showScreen($startScreen);
+    });
+  </script>
+</body>
+</html>
